@@ -3,6 +3,8 @@ package br.edu.ifsp.aluno.gloriaporte.photos.ui
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.aluno.gloriaporte.photos.R
@@ -49,7 +51,20 @@ class MainActivity : AppCompatActivity() {
 
         amb.photosSp.apply {
             adapter = photoAdapter
-            onItemSelectedListener =
+            onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+            }
         }
 
         amb.imagePhoto.apply {
