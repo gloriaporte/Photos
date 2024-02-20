@@ -11,42 +11,68 @@
         android:layout_width="0dp"
         android:layout_height="?actionBarSize"
         android:background="@color/design_default_color_primary"
-        app:titleTextColor="@color/design_default_color_on_primary"
-        app:subtitleTextColor="@color/design_default_color_on_primary"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subtitleTextColor="@color/design_default_color_on_primary"
+        app:titleTextColor="@color/design_default_color_on_primary" />
 
     <Spinner
         android:id="@+id/photosSp"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginHorizontal="5dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mainTb" />
 
-    <ImageView
-        android:id="@+id/photoImagesIv"
+    <TextView
+        android:id="@+id/textThumbnail"
         android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginHorizontal="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/thumbnail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photosSp"
-        app:layout_constraintVertical_bias="0.031" />
+        app:layout_constraintTop_toBottomOf="@id/photosSp" />
 
     <ImageView
-        android:id="@+id/photoThumbnailIv"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginHorizontal="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageThumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photoImagesIv"
-        />
+        app:layout_constraintTop_toBottomOf="@id/textThumbnail" />
+
+    <TextView
+        android:id="@+id/textPhoto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageThumbnail" />
+
+    <ImageView
+        android:id="@+id/imagePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textPhoto" />
+
+    <ProgressBar
+        android:id="@+id/loadPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

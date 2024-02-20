@@ -3,4 +3,6 @@
     <string name="request_problem">Request problem</string>
     <string name="connection_failed">Connection failed</string>
     <string name="response_problem">Response problem</string>
+    <string name="photo">Photo</string>
+    <string name="thumbnail">Thumbnail</string>
 </resources>
