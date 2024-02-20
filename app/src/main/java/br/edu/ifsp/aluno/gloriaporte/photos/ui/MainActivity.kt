@@ -7,23 +7,13 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.aluno.gloriaporte.photos.R
 import br.edu.ifsp.aluno.gloriaporte.photos.adapter.PhotoAdapter
 import br.edu.ifsp.aluno.gloriaporte.photos.adapter.PhotoImageAdapter
 import br.edu.ifsp.aluno.gloriaporte.photos.databinding.ActivityMainBinding
 import br.edu.ifsp.aluno.gloriaporte.photos.model.Api
 import br.edu.ifsp.aluno.gloriaporte.photos.model.Photo
-import br.edu.ifsp.aluno.gloriaporte.photos.model.PhotoList
 import com.android.volley.toolbox.ImageRequest
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.HttpURLConnection.HTTP_OK
-import java.net.URL
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class MainActivity : AppCompatActivity() {
 
@@ -59,11 +49,11 @@ class MainActivity : AppCompatActivity() {
                     id: Long
                 ) {
                     val size = photoImageList.size
-                    photoImageAdapter.clear()
+                    photoImageList.clear()
                     photoImageAdapter.notifyItemRangeRemoved(0, size)
 
-                    retrievePhotos(photoList[position].url, amb.imagePhoto)
-                    retrievePhotos(photoList[position].thumbnailUrl, amb.imageThumbnail)
+                    retrievePhotosImages(photoList[position].url, amb.imagePhoto)
+                    retrievePhotosImages(photoList[position].thumbnailUrl, amb.imageThumbnail)
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {

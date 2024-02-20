@@ -9,6 +9,7 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import org.json.JSONArray
 import java.net.HttpURLConnection.HTTP_NOT_MODIFIED
 import java.net.HttpURLConnection.HTTP_OK
 
@@ -35,23 +36,28 @@ class Api (context: Context){
     }
 
     class PhotoListRequest(
-        private val responseListener: Response.Listener<PhotoList>,
+        private val responseListener: Response.Listener<List<Photo>>, // Agora esperamos uma lista de Photo
         errorListener: Response.ErrorListener
-    ): Request<PhotoList>(Method.GET, PHOTOS_ENDPOINT, errorListener) {
+    ) : Request<List<Photo>>(Method.GET, PHOTOS_ENDPOINT, errorListener) {
 
-        override fun parseNetworkResponse(response: NetworkResponse?): Response<PhotoList> =
-            if(response?.statusCode == HTTP_OK || response?.statusCode == HTTP_NOT_MODIFIED){
-                String(response.data).run {
-                    Response.success(
-                        Gson().fromJson(this, PhotoList::class.java),
-                        HttpHeaderParser.parseCacheHeaders(response)
-                    )
+        override fun parseNetworkResponse(response: NetworkResponse?): Response<List<Photo>> =
+            if (response?.statusCode == HTTP_OK || response?.statusCode == HTTP_NOT_MODIFIED) {
+                val jsonArray = JSONArray(String(response.data))
+                val photoList = mutableListOf<Photo>()
+                for (i in 0 until jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    val photo = Gson().fromJson(jsonObject.toString(), Photo::class.java)
+                    photoList.add(photo)
                 }
+                Response.success(
+                    photoList,
+                    HttpHeaderParser.parseCacheHeaders(response)
+                )
             } else {
                 Response.error(VolleyError())
             }
 
-        override fun deliverResponse(response: PhotoList?) {
+        override fun deliverResponse(response: List<Photo>?) {
             responseListener.onResponse(response)
         }
     }

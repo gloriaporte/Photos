@@ -19,10 +19,8 @@ RecyclerView.Adapter<PhotoImageAdapter.PhotoImageViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoImageViewHolder =
         PhotoImageViewHolder(TilePhotoImageBinding.inflate(LayoutInflater.from(activityContext), parent, false))
 
-
     override fun onBindViewHolder(holder: PhotoImageViewHolder, position: Int) =
         holder.photoIv.setImageBitmap(photoImageList[position])
-
 
     override fun getItemCount(): Int = photoImageList.size
 }
