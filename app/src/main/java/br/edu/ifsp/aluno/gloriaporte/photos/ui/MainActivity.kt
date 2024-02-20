@@ -1,10 +1,13 @@
 package br.edu.ifsp.aluno.gloriaporte.photos.ui
 
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.aluno.gloriaporte.photos.R
 import br.edu.ifsp.aluno.gloriaporte.photos.adapter.PhotoAdapter
+import br.edu.ifsp.aluno.gloriaporte.photos.adapter.PhotoImageAdapter
 import br.edu.ifsp.aluno.gloriaporte.photos.databinding.ActivityMainBinding
 import br.edu.ifsp.aluno.gloriaporte.photos.model.Photo
 import br.edu.ifsp.aluno.gloriaporte.photos.model.PhotoList
@@ -27,6 +30,11 @@ class MainActivity : AppCompatActivity() {
         PhotoAdapter(this, photoList)
     }
 
+    private val photoImageList: MutableList<Bitmap> = mutableListOf()
+    private val photoImageAdapter: PhotoImageAdapter by lazy {
+        PhotoImageAdapter(this, photoImageList)
+    }
+
     companion object {
         const val PHOTOS_ENDPOINT = "https://jsonplaceholder.typicode.com/photos/"
     }
@@ -39,27 +47,48 @@ class MainActivity : AppCompatActivity() {
             title = "Photos"
         })
 
-        amb.photosSp.adapter = photoAdapter
+        amb.photosSp.apply {
+            adapter = photoAdapter
+            onItemSelectedListener =
+        }
+
+        amb.imagePhoto.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = photoImageAdapter
+        }
+
         retrievePhotos()
     }
 
     private fun retrievePhotos() {
-        val photosConnection = URL(PHOTOS_ENDPOINT).openConnection() as HttpURLConnection
+        Thread {
+            val photosConnection = URL(PHOTOS_ENDPOINT).openConnection() as HttpURLConnection
 
-        try {
-            if(photosConnection.responseCode == HTTP_OK) {
-                InputStreamReader(photosConnection.inputStream).readText().let {
-                    photoAdapter.addAll(Gson().fromJson(it, PhotoList::class.java).photos)
+            try {
+                if (photosConnection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val responseText = InputStreamReader(photosConnection.inputStream).readText()
+                    runOnUiThread {
+                        try {
+                            val photoArray = Gson().fromJson(responseText, Array<Photo>::class.java)
+                            val photoList = photoArray.toList()
+                            photoAdapter.addAll(photoList)
+                        } catch (e: JsonSyntaxException) {
+                            Toast.makeText(this, getString(R.string.response_problem), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } else {
-                Toast.makeText(this, getString(R.string.request_problem), Toast.LENGTH_SHORT).show()
+            } catch (ioe: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                photosConnection.disconnect()
             }
-        } catch (ioe: IOException) {
-            Toast.makeText(this, getString(R.string.connection_failed), Toast.LENGTH_SHORT).show()
-        } catch (jse: JsonSyntaxException) {
-            Toast.makeText(this, getString(R.string.response_problem), Toast.LENGTH_SHORT).show()
-        } finally {
-            photosConnection.disconnect()
-        }
+        }.start()
     }
+
 }
